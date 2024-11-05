@@ -1,16 +1,50 @@
 'use client';
 
 import Image from 'next/image';
+import { useState } from 'react';
 import { signIn } from '~/auth';
 
 export default function Home() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await signIn({ username, password });
+  };
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        {/* Github login */}
-        <button type="button" onClick={() => signIn('github')}>
-          Sign in with GitHub
-        </button>
+        <h2>Username: abc Password: 123</h2>
+        {/* Login form */}
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 w-full max-w-sm"
+        >
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            className="p-2 border rounded"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            className="p-2 border rounded"
+          />
+          <button
+            type="submit"
+            className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Sign in
+          </button>
+        </form>
+
+        {/* Rest of the existing content */}
         <Image
           className="dark:invert"
           src="/next.svg"
